@@ -21,26 +21,30 @@ router.post('/' ,
       return res.status(400).json({ checkResult: checkResult.array() });
     }
 
-    const user = UserSchema(req.body);
-    UserSchema.create({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-    }).then(() => {
-        // user => res.json(user)
-        user => user.save()
-    })
+   const { name, email, password } = req.body;
 
+   UserSchema.findOne({ email })
+     .then((existingUser) => {
+       if (existingUser) {
+         return res
+           .status(400)
+           .json({ errors: [{ msg: "Email is already in use" }] });
+       }
 
-    obj = {
-        saved:"Yes",
-    }
-    // console.log(req.body);
-    // console.log(user);
-    // placeing some checks here like mail mein @something, name mein phone no. nahi and all  
-    // user.save()
-    // res.send(obj)
-    res.json(obj);
+       const user = new UserSchema({
+         name,
+         email,
+         password,
+       });
+
+       res.json({ saved: "Yes" });
+       return user.save();
+     })
+     .catch((err) => {
+       console.error(err);
+       res.status(500).json({ msg: "Server error" });
+     });
+
 })
 
 module.exports = router
