@@ -6,45 +6,89 @@ const UserSchema = require('../models/User')
 const { body, query, validationResult } = require("express-validator");
 
 // get request mein bbhi save toh kar skte par log's mein aa skta data so use post for such cases 
-router.post('/' , 
+// router.post('/' , 
     
-    [ 
-        body('email', 'Please Enter a Valid Email').isEmail() , 
-        body('name', 'Name cannot be Empty' ).notEmpty() , 
-        body('password' , 'Password must of length 5' ).isLength({min:5})  
-    ]
+//     [ 
+//         body('email', 'Please Enter a Valid Email').isEmail() , 
+//         body('name', 'Name cannot be Empty' ).notEmpty() , 
+//         body('password' , 'Password must of length 5' ).isLength({min:5})  
+//     ]
 
-    , (req,res) => {
+//     , (req,res) => {
 
-    const checkResult = validationResult(req)
+//     const checkResult = validationResult(req)
+//     if (!checkResult.isEmpty()) {
+//       return res.status(400).json({ checkResult: checkResult.array() });
+//     }
+
+//    const { name, email, password } = req.body;
+
+//    UserSchema.findOne({ email })
+//      .then((existingUser) => {
+//        if (existingUser) {
+//          return res
+//            .status(400)
+//            .json({ errors: [{ msg: "Email is already in use" }] });
+//        }
+
+//        const user = new UserSchema({
+//          name,
+//          email,
+//          password,
+//        });
+
+//        res.json({ saved: "Yes" });
+//        return user.save();
+//      })
+//      .catch((err) => {
+//        console.error(err);
+//        res.status(500).json({ msg: "Server error" });
+//      });
+
+// })
+
+
+router.post(
+  "/api/createuser",
+  [
+    body("email", "Please Enter a Valid Email").isEmail(),
+    body("name", "Name cannot be Empty").notEmpty(),
+    body("password", "Password must be at least 5 characters long").isLength({
+      min: 5,
+    }),
+  ],
+  async (req, res) => {
+    const checkResult = validationResult(req);
+
     if (!checkResult.isEmpty()) {
-      return res.status(400).json({ checkResult: checkResult.array() });
+      return res.status(400).json({ errors: checkResult.array() });
     }
 
-   const { name, email, password } = req.body;
+    const { name, email, password } = req.body;
 
-   UserSchema.findOne({ email })
-     .then((existingUser) => {
-       if (existingUser) {
-         return res
-           .status(400)
-           .json({ errors: [{ msg: "Email is already in use" }] });
-       }
+    try {
+      const existingUser = await UserSchema.findOne({ email });
 
-       const user = new UserSchema({
-         name,
-         email,
-         password,
-       });
+      if (existingUser) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: "Email is already in use" }] });
+      }
 
-       res.json({ saved: "Yes" });
-       return user.save();
-     })
-     .catch((err) => {
-       console.error(err);
-       res.status(500).json({ msg: "Server error" });
-     });
+      const user = new UserSchema({
+        name,
+        email,
+        password,
+      });
 
-})
+      await user.save();
+      res.json({ saved: "user Created Successfully! Go Ahead and login" });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ msg: "Internal Server error" });
+    }
+  }
+);
+
 
 module.exports = router
