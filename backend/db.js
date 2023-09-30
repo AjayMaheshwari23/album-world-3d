@@ -15,6 +15,11 @@ const connect_function = () => {
 const app = express();
 const port = 3000;
 
+app.use(express.json()) // To access req.something 
+
+// Available Routes - Creating Endpoints 
+app.use('/api/auth' , require('./routes/auth') )
+
 app.get("/", (req, res) => {
   res.send("I am sending");
 });
