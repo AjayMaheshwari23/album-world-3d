@@ -1,9 +1,12 @@
 // Routes ke liye express
-
+require("dotenv").config();
 const express = require('express')
 const router = express.Router();
 const UserSchema = require('../models/User')
 const { body, query, validationResult } = require("express-validator");
+const bcrypt = require('bcryptjs')
+const JWT_SECRET = process.env.JWT_SECRET
+var jwt = require("jsonwebtoken");
 
 // get request mein bbhi save toh kar skte par log's mein aa skta data so use post for such cases 
 // router.post('/' , 
@@ -49,13 +52,11 @@ const { body, query, validationResult } = require("express-validator");
 
 
 router.post(
-  "/api/createuser",
+  "/",
   [
     body("email", "Please Enter a Valid Email").isEmail(),
     body("name", "Name cannot be Empty").notEmpty(),
-    body("password", "Password must be at least 5 characters long").isLength({
-      min: 5,
-    }),
+    body("password", "Password must be at least 5 characters long").isLength({ min: 5, }),
   ],
   async (req, res) => {
     const checkResult = validationResult(req);
@@ -75,14 +76,30 @@ router.post(
           .json({ errors: [{ msg: "Email is already in use" }] });
       }
 
+      const salt = await bcrypt.genSalt(10); 
+      const hashPass = await bcrypt.hash(password,salt);
+
+      // console.log(hashPass);
+
       const user = new UserSchema({
         name,
         email,
-        password,
+        password: hashPass,
       });
 
+      const data = {
+        user: {
+          id: user.id
+        }
+      }
+
+      const jwtToken = jwt.sign(data,JWT_SECRET);
+      console.log(jwtToken);
+
       await user.save();
-      res.json({ saved: "user Created Successfully! Go Ahead and login" });
+      // res.json({ saved: "user Created Successfully! Go Ahead and login" });
+      res.json( { jwtToken: jwtToken } );
+
     } catch (err) {
       console.error(err);
       res.status(500).json({ msg: "Internal Server error" });
