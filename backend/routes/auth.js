@@ -108,4 +108,49 @@ router.post(
 );
 
 
+
+// For login : - 
+router.post(
+  "/login",
+  [
+    body("email", "Please Enter a Valid Email").isEmail(),
+    body("password", "Password cannot be Empty").notEmpty(),
+  ],
+
+  async (req, res) => {
+    const checkResult = validationResult(req);
+
+    if (!checkResult.isEmpty()) {
+      return res.status(400).json({ errors: checkResult.array() });
+    }
+
+    const { email, password } = req.body;
+
+    try {
+     
+      let exists = await UserSchema.findOne({ email });
+      if(!exists){
+        return res.status(400).json({error: "Invalid Credentials"});
+      }
+
+      const passwordok = await bcrypt.compare(password , exists.password);
+      if(!passwordok) return res.status(400).json({error: "Invalid Credentials"})
+
+      const data = {
+        user: {
+          id: exists.id,
+        },
+      };
+  
+      const jwtToken = jwt.sign(data,JWT_SECRET);
+      res.json({ jwtToken: jwtToken });
+
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ msg: "Internal Server error" });
+    }
+  }
+);
+
+
 module.exports = router
