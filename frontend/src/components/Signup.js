@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { LockOutlined, UserOutlined , MailOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 // require("dotenv").config();
 // const LOGIN = process.env.LOGIN;
@@ -114,7 +114,7 @@ const Signin = (props) => {
             }}
           >
             <Input
-              prefix={<UserOutlined className="site-form-item-icon" />}
+              prefix={<MailOutlined className="site-form-item-icon" />}
               placeholder="Email"
             />
           </Form.Item>
@@ -134,6 +134,7 @@ const Signin = (props) => {
             ]}
           >
             <Input.Password
+              placeholder=" Password"
               prefix={<LockOutlined className="site-form-item-icon" />}
             />
           </Form.Item>
@@ -153,6 +154,7 @@ const Signin = (props) => {
             ]}
           >
             <Input.Password
+              placeholder=" Confirm Password"
               prefix={<LockOutlined className="site-form-item-icon" />}
             />
           </Form.Item>
@@ -173,8 +175,8 @@ const Signin = (props) => {
               onClick={() => {
                 navigate("/Signin");
               }}
-             >
-              login now!
+            >
+              Already have Credentials !
             </a>
           </Form.Item>
         </Form>

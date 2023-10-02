@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
 // require("dotenv").config();
@@ -86,8 +86,8 @@ const Signin = (props) => {
             rules={[{ required: true, message: "Please input your Email!" }]}
           >
             <Input
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              placeholder="Username"
+              prefix={<MailOutlined className="site-form-item-icon" />}
+              placeholder=" Email"
             />
           </Form.Item>
           <Form.Item
@@ -97,7 +97,7 @@ const Signin = (props) => {
             <Input
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
-              placeholder="Password"
+              placeholder=" Password"
               value={credentials.password}
               onChange={(e) => {
                 setcredentials({
