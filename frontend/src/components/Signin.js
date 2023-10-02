@@ -1,7 +1,9 @@
 import React from "react";
 import { useState } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+
 // require("dotenv").config();
 // const LOGIN = process.env.LOGIN;
 const LOGIN = "http://localhost:5000/api/auth/login";
@@ -41,7 +43,7 @@ const Signin = (props) => {
       console.log("Response data:", data);
       if (data.success) {
         localStorage.setItem("token", data.jwtToken);
-        navigate("/");
+        navigate("/Main");
         props.showAlert("SuccessFul login", "success");
 
       } else {
@@ -69,81 +71,72 @@ const Signin = (props) => {
         }}
       >
         <Form
-          //   onsubmit={handlesubmit}
-          name="basic"
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
-          style={{
-            maxWidth: 600,
-          }}
-          initialValues={{
-            remember: true,
-          }}
+          name="normal_login"
+          className="login-form"
+          initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
         >
           <Form.Item
-            label="Email"
             name="email"
             value={credentials.email}
             onChange={(e) => {
               setcredentials({ ...credentials, ["email"]: e.target.value });
               console.log(credentials);
             }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your email!",
-              },
-            ]}
+            rules={[{ required: true, message: "Please input your Email!" }]}
           >
-            <Input />
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Username"
+            />
           </Form.Item>
-
           <Form.Item
-            label="Password"
             name="password"
-            fieldId="password"
-            value={credentials.password}
-            onChange={(e) => {
-              setcredentials({ ...credentials, ["password"]: e.target.value });
-              console.log(credentials);
-            }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your password!",
-              },
-            ]}
+            rules={[{ required: true, message: "Please input your Password!" }]}
           >
-            <Input.Password />
+            <Input
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password"
+              value={credentials.password}
+              onChange={(e) => {
+                setcredentials({
+                  ...credentials,
+                  ["password"]: e.target.value,
+                });
+                console.log(credentials);
+              }}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Form.Item name="remember" valuePropName="checked" noStyle>
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+
+            <a className="login-form-forgot" href="">
+              Forgot password
+            </a>
           </Form.Item>
 
-          <Form.Item
-            name="remember"
-            valuePropName="checked"
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-
-          <Form.Item
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
-            <Button type="primary" htmlType="submit" onClick={handlesubmit}>
-              Submit
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              onClick={handlesubmit}
+              style={{ marginRight: 10 }}
+            >
+              Log in
             </Button>
+            Or{" "}
+            <a
+              href=""
+              onClick={() => {
+                navigate("/Signup");
+              }}
+            >
+              register now!
+            </a>
           </Form.Item>
         </Form>
       </div>

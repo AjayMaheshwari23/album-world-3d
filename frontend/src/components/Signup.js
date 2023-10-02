@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
+import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 // require("dotenv").config();
 // const LOGIN = process.env.LOGIN;
@@ -42,9 +43,9 @@ const Signin = (props) => {
 
       // Check if the response status is OK (HTTP 200-299)
       // if (!response.success) {
-      //   alert(response.error.message);
+      //    alert(response.error.message);
       //   return;
-        // throw new Error(`HTTP error! Status: ${response.status}`);
+      //   throw new Error(`HTTP error! Status: ${response.status}`);
       // }
 
       // Parse the response body as JSON
@@ -54,18 +55,17 @@ const Signin = (props) => {
       // Log the data to the console
       console.log("Response data:", data);
       if (data.success) {
+        props.showAlert("Successfully Registeres","success")
         navigate("/Signin");
       } else {
         console.log(data.errors);
-        let txt= "";
         data.errors.forEach(ele => {
-          txt += ele.msg;
-          txt += '\n'
+          props.showAlert(ele.msg, "error");
         });
-        alert(txt);
+        // alert(txt);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.log("Error:", error);
     }
   };
 
@@ -85,63 +85,40 @@ const Signin = (props) => {
         }}
       >
         <Form
-          //   onsubmit={handlesubmit}
-          name="basic"
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
-          style={{
-            maxWidth: 600,
-          }}
-          initialValues={{
-            remember: true,
-          }}
+          name="normal_login"
+          className="login-form"
+          initialValues={{ remember: true }}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
         >
           <Form.Item
-            label="name"
-            name="name"
+            name="username"
+            rules={[{ required: true, message: "Please input your Name!" }]}
             value={credentials.name}
             onChange={(e) => {
               setcredentials({ ...credentials, ["name"]: e.target.value });
               console.log(credentials);
             }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your name!",
-              },
-            ]}
           >
-            <Input />
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Username"
+            />
           </Form.Item>
-
-
           <Form.Item
-            label="Email"
             name="email"
+            rules={[{ required: true, message: "Please input your Email!" }]}
             value={credentials.email}
             onChange={(e) => {
               setcredentials({ ...credentials, ["email"]: e.target.value });
               console.log(credentials);
             }}
-            rules={[
-              {
-                required: true,
-                message: "Please input your email!",
-              },
-            ]}
           >
-            <Input />
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Email"
+            />
           </Form.Item>
-
           <Form.Item
-            label="Password"
             name="password"
             fieldId="password"
             value={credentials.password}
@@ -156,14 +133,14 @@ const Signin = (props) => {
               },
             ]}
           >
-            <Input.Password />56
+            <Input.Password
+              prefix={<LockOutlined className="site-form-item-icon" />}
+            />
           </Form.Item>
-
           <Form.Item
-            label="cPassword"
             name="cpassword"
             fieldId="cpassword"
-            value={credentials.cpassword}
+            value={credentials.password}
             onChange={(e) => {
               setcredentials({ ...credentials, ["cpassword"]: e.target.value });
               console.log(credentials);
@@ -171,33 +148,34 @@ const Signin = (props) => {
             rules={[
               {
                 required: true,
-                message: "Please input your Confirm password!",
+                message: "Re-Enter your password!",
               },
             ]}
           >
-            <Input.Password />
+            <Input.Password
+              prefix={<LockOutlined className="site-form-item-icon" />}
+            />
           </Form.Item>
 
-          <Form.Item
-            name="remember"
-            valuePropName="checked"
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-
-          <Form.Item
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
-          >
-            <Button type="primary" htmlType="submit" onClick={handlesubmit}>
-              Submit
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              onClick={handlesubmit}
+              style={{ marginRight: 10 }}
+            >
+              Register
             </Button>
+            Or{" "}
+            <a
+              href=""
+              onClick={() => {
+                navigate("/Signin");
+              }}
+             >
+              login now!
+            </a>
           </Form.Item>
         </Form>
       </div>
