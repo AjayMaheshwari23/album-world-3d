@@ -13,7 +13,7 @@ const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
 
-const Signin = () => {
+const Signin = (props) => {
   const navigate = useNavigate();
 
   const [credentials, setcredentials] = useState({ email: "", password: "" });
@@ -33,10 +33,6 @@ const Signin = () => {
         }),
       });
 
-      // Check if the response status is OK (HTTP 200-299)
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
 
       // Parse the response body as JSON
       const data = await response.json();
@@ -46,11 +42,14 @@ const Signin = () => {
       if (data.success) {
         localStorage.setItem("token", data.jwtToken);
         navigate("/");
+        props.showAlert("SuccessFul login", "success");
+
       } else {
-        alert("Invalid credentials");
+        props.showAlert("Invalid credentials", "error");
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.log("Error:", error);
+      
     }
   };
 

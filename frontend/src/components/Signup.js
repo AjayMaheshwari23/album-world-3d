@@ -4,7 +4,7 @@ import { Button, Checkbox, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 // require("dotenv").config();
 // const LOGIN = process.env.LOGIN;
-const LOGIN = "http://localhost:5000/api/auth/createuser";
+const REGISTER = "http://localhost:5000/api/auth/createuser";
 
 const onFinish = (values) => {
   console.log("Success:", values);
@@ -13,41 +13,56 @@ const onFinishFailed = (errorInfo) => {
   console.log("Failed:", errorInfo);
 };
 
-const Signin = () => {
+const Signin = (props) => {
   const navigate = useNavigate();
 
-  const [credentials, setcredentials] = useState({ email: "", password: "" });
+  const [credentials, setcredentials] = useState({ name:"" , email: "", password: "" , cpassword:"" });
 
   const handlesubmit = async (e) => {
     e.preventDefault();
+    if(credentials.password !== credentials.cpassword){
+      props.showAlert("Passwords do not match", "error");
+      return;
+    }
     try {
       // Make a GET request to the URL
-      const response = await fetch(LOGIN, {
+      const response = await fetch(REGISTER, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          name: credentials.name,
           email: credentials.email,
           password: credentials.password,
         }),
       });
 
+      console.log(response);
+
       // Check if the response status is OK (HTTP 200-299)
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+      // if (!response.success) {
+      //   alert(response.error.message);
+      //   return;
+        // throw new Error(`HTTP error! Status: ${response.status}`);
+      // }
 
       // Parse the response body as JSON
       const data = await response.json();
 
+
       // Log the data to the console
       console.log("Response data:", data);
       if (data.success) {
-        localStorage.setItem("token", data.jwtToken);
-        navigate("/");
+        navigate("/Signin");
       } else {
-        alert("Invalid credentials");
+        console.log(data.errors);
+        let txt= "";
+        data.errors.forEach(ele => {
+          txt += ele.msg;
+          txt += '\n'
+        });
+        alert(txt);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -89,6 +104,25 @@ const Signin = () => {
           autoComplete="off"
         >
           <Form.Item
+            label="name"
+            name="name"
+            value={credentials.name}
+            onChange={(e) => {
+              setcredentials({ ...credentials, ["name"]: e.target.value });
+              console.log(credentials);
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your name!",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+
+          <Form.Item
             label="Email"
             name="email"
             value={credentials.email}
@@ -119,6 +153,25 @@ const Signin = () => {
               {
                 required: true,
                 message: "Please input your password!",
+              },
+            ]}
+          >
+            <Input.Password />56
+          </Form.Item>
+
+          <Form.Item
+            label="cPassword"
+            name="cpassword"
+            fieldId="cpassword"
+            value={credentials.cpassword}
+            onChange={(e) => {
+              setcredentials({ ...credentials, ["cpassword"]: e.target.value });
+              console.log(credentials);
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your Confirm password!",
               },
             ]}
           >

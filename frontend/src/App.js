@@ -1,29 +1,36 @@
 import "./App.css";
 import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import About from "./components/About";
 import Home from "./components/Home";
 import Signin from "./components/Signin";
-
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/About",
-    element: <About />,
-  },
-  {
-    path: "/Signin",
-    element: <Signin />,
-  },
-]);
+import Signup from "./components/Signup";
+import { useState } from "react";
+import MyAlert from "./components/MyAlert";
 
 function App() {
+  const [alert, setAlert] = useState(null);
+  const showAlert = (message, type) => {
+    setAlert({
+      msg: message,
+      type: type,
+    });
+    setTimeout(() => {
+      setAlert(null);
+    }, 1500);
+  };
+
   return (
     <>
-      <RouterProvider router={router} />
+      {/* <RouterProvider router={router} /> */}
+      <Router>
+        <MyAlert alert={alert} />
+        <Routes>
+          <Route path="/" element={<Home showAlert={showAlert} />} />
+          <Route path="/Signin" element={<Signin showAlert={showAlert} />} />
+          <Route path="/Signup" element={<Signup showAlert={showAlert} />} />
+        </Routes>
+      </Router>
     </>
   );
 }
