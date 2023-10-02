@@ -4,7 +4,7 @@ import { Button, Checkbox, Form, Input } from "antd";
 import { useNavigate } from "react-router-dom";
 // require("dotenv").config();
 // const LOGIN = process.env.LOGIN;
-const LOGIN = "http://localhost:5000/api/auth/login";
+const LOGIN = "http://localhost:5000/api/auth/createuser";
 
 const onFinish = (values) => {
   console.log("Success:", values);
