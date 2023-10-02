@@ -11,7 +11,7 @@ const fetchuser = require('../middleware/fetchuser')
 
 
 router.post(
-  "/",
+  "/createuser",
   [
     body("email", "Please Enter a Valid Email").isEmail(),
     body("name", "Name cannot be Empty").notEmpty(),
@@ -19,20 +19,19 @@ router.post(
   ],
   async (req, res) => {
     const checkResult = validationResult(req);
-
+    let success = false;
     if (!checkResult.isEmpty()) {
-      return res.status(400).json({ errors: checkResult.array() });
+      return res.status(400).json({ success,errors: checkResult.array() });
     }
 
     const { name, email, password } = req.body;
 
     try {
       const existingUser = await UserSchema.findOne({ email });
-
       if (existingUser) {
         return res
           .status(400)
-          .json({ errors: [{ msg: "Email is already in use" }] });
+          .json({ success,errors: [{ msg: "Email is already in use" }] });
       }
 
       const salt = await bcrypt.genSalt(10); 
@@ -55,13 +54,13 @@ router.post(
       const jwtToken = jwt.sign(data,JWT_SECRET);
       console.log(jwtToken);
 
-      await user.save();
+      await user.save(); success = true;
       // res.json({ saved: "user Created Successfully! Go Ahead and login" });
-      res.json( { jwtToken: jwtToken } );
+      res.json( {success, jwtToken: jwtToken } );
 
     } catch (err) {
       console.error(err);
-      res.status(500).json({ msg: "Internal Server error" });
+      res.status(500).json({ success , msg: "Internal Server error" });
     }
   }
 );
@@ -78,9 +77,10 @@ router.post(
 
   async (req, res) => {
     const checkResult = validationResult(req);
+    let success = false;
 
     if (!checkResult.isEmpty()) {
-      return res.status(400).json({ errors: checkResult.array() });
+      return res.status(400).json({ success, errors: checkResult.array() });
     }
 
     const { email, password } = req.body;
@@ -89,11 +89,11 @@ router.post(
      
       let exists = await UserSchema.findOne({ email });
       if(!exists){
-        return res.status(400).json({error: "Invalid Credentials"});
+        return res.status(400).json({ success , error: "Invalid Credentials" });
       }
 
       const passwordok = await bcrypt.compare(password , exists.password);
-      if(!passwordok) return res.status(400).json({error: "Invalid Credentials"})
+      if(!passwordok) return res.status(400).json({ success , error: "Invalid Credentials" });
 
       const data = {
         user: {
@@ -102,7 +102,8 @@ router.post(
       };
   
       const jwtToken = jwt.sign(data,JWT_SECRET);
-      res.json({ jwtToken: jwtToken });
+      success = true;
+      res.json({ success , jwtToken: jwtToken });
 
     } catch (err) {
       console.error(err);
