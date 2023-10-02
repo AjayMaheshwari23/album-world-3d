@@ -1,7 +1,12 @@
 import React from "react";
 import { useState } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
-import { LockOutlined, UserOutlined , MailOutlined } from "@ant-design/icons";
+import {
+  LockOutlined,
+  UserOutlined,
+  MailOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 // require("dotenv").config();
 // const LOGIN = process.env.LOGIN;
@@ -18,11 +23,14 @@ const Signin = (props) => {
   const navigate = useNavigate();
 
   const [credentials, setcredentials] = useState({ name:"" , email: "", password: "" , cpassword:"" });
+const [loading, isloading] = useState(0);
 
   const handlesubmit = async (e) => {
+    isloading(true);
     e.preventDefault();
     if(credentials.password !== credentials.cpassword){
       props.showAlert("Passwords do not match", "error");
+      isloading(false);
       return;
     }
     try {
@@ -67,6 +75,8 @@ const Signin = (props) => {
     } catch (error) {
       console.log("Error:", error);
     }
+isloading(false);
+    
   };
 
   // const onchange = (e) => {
@@ -167,6 +177,7 @@ const Signin = (props) => {
               onClick={handlesubmit}
               style={{ marginRight: 10 }}
             >
+              {loading ? <LoadingOutlined /> : null}
               Register
             </Button>
             Or{" "}

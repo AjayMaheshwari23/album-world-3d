@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
-import { LockOutlined, MailOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined , LoadingOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
 // require("dotenv").config();
@@ -19,8 +19,10 @@ const Signin = (props) => {
   const navigate = useNavigate();
 
   const [credentials, setcredentials] = useState({ email: "", password: "" });
+  const [loading,isloading] = useState(0);
 
   const handlesubmit = async (e) => {
+    isloading(true);
     e.preventDefault();
     try {
       // Make a GET request to the URL
@@ -53,6 +55,8 @@ const Signin = (props) => {
       console.log("Error:", error);
       
     }
+
+    isloading(false);
   };
 
   // const onchange = (e) => {
@@ -126,6 +130,7 @@ const Signin = (props) => {
               onClick={handlesubmit}
               style={{ marginRight: 10 }}
             >
+             { loading ? <LoadingOutlined /> : null }
               Log in
             </Button>
             Or{" "}
