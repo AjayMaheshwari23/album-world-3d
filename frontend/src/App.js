@@ -1,7 +1,6 @@
 import "./App.css";
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import About from "./components/About";
 import Home from "./components/Home";
 import Signin from "./components/Signin";
 import Signup from "./components/Signup";
@@ -11,14 +10,15 @@ import Main from "./components/Main"
 
 function App() {
   const [alert, setAlert] = useState(null);
-  const showAlert = (message, type) => {
+  const showAlert = (message, type,flag) => {
     setAlert({
       msg: message,
       type: type,
+      flag:1,
     });
-    setTimeout(() => {
-      setAlert(null);
-    }, 1500);
+    // setTimeout(() => {
+    //   setAlert(null);
+    // }, 1500);
   };
 
   return (

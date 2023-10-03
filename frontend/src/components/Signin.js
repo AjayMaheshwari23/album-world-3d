@@ -1,8 +1,10 @@
 import React from "react";
 import { useState } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
-import { LockOutlined, MailOutlined , LoadingOutlined } from "@ant-design/icons";
+import { LockTwoTone , MailTwoTone } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import Starfield from "./Starfield";
+import '../CSS/Signin.css'
 
 // require("dotenv").config();
 // const LOGIN = process.env.LOGIN;
@@ -10,9 +12,6 @@ const LOGIN = "http://localhost:5000/api/auth/login";
 
 const onFinish = (values) => {
   console.log("Success:", values);
-};
-const onFinishFailed = (errorInfo) => {
-  console.log("Failed:", errorInfo);
 };
 
 const Signin = (props) => {
@@ -46,7 +45,7 @@ const Signin = (props) => {
       if (data.success) {
         localStorage.setItem("token", data.jwtToken);
         navigate("/Main");
-        props.showAlert("SuccessFul login", "success");
+        props.showAlert("Successful Login", "success");
 
       } else {
         props.showAlert("Invalid credentials", "error");
@@ -66,6 +65,7 @@ const Signin = (props) => {
 
   return (
     <>
+      <Starfield />
       <div
         style={{
           display: "flex",
@@ -80,6 +80,13 @@ const Signin = (props) => {
           initialValues={{ remember: true }}
           onFinish={onFinish}
         >
+          <h1
+            className="whitetxt specialtxt"
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            {" "}
+            Login{" "}
+          </h1>
           <Form.Item
             name="email"
             value={credentials.email}
@@ -90,7 +97,7 @@ const Signin = (props) => {
             rules={[{ required: true, message: "Please input your Email!" }]}
           >
             <Input
-              prefix={<MailOutlined className="site-form-item-icon" />}
+              prefix={<MailTwoTone className="site-form-item-icon" />}
               placeholder=" Email"
             />
           </Form.Item>
@@ -99,7 +106,7 @@ const Signin = (props) => {
             rules={[{ required: true, message: "Please input your Password!" }]}
           >
             <Input
-              prefix={<LockOutlined className="site-form-item-icon" />}
+              prefix={<LockTwoTone className="site-form-item-icon" />}
               type="password"
               placeholder=" Password"
               value={credentials.password}
@@ -114,7 +121,7 @@ const Signin = (props) => {
           </Form.Item>
           <Form.Item>
             <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
+              <Checkbox className="whitetxt">Remember me</Checkbox>
             </Form.Item>
 
             <a className="login-form-forgot" href="">
@@ -129,11 +136,11 @@ const Signin = (props) => {
               className="login-form-button"
               onClick={handlesubmit}
               style={{ marginRight: 10 }}
+              loading={loading}
             >
-             { loading ? <LoadingOutlined /> : null }
               Log in
             </Button>
-            Or{" "}
+            <span className="whitetxt specialtxt"> Or </span>
             <a
               href=""
               onClick={() => {

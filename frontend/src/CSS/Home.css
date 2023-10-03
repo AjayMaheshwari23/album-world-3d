@@ -1,0 +1,9 @@
+.whitetxt{
+    color: white;
+}
+
+@import url(https://fonts.googleapis.com/css?family=Orbitron:700);
+
+.specialtxt{
+  font-family: 'Orbitron', sans-serif;
+}

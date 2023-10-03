@@ -1,0 +1,30 @@
+body, html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Style for the flex container to cover the entire screen */
+.flex-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%; /* 100% width of the viewport */
+  height: 100%; /* 100% height of the viewport */
+}
+
+/* Style for the flex items */
+.item {
+  flex: 1;
+  min-width: calc(50% - 10px);
+  margin: 5px;
+  background-color: #e0e0e0;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 548px) {
+  .item {
+    min-width: calc(100% - 10px); /* Full width for each item on smaller screens */
+  }
+}
