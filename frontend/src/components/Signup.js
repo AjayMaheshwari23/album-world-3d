@@ -2,12 +2,13 @@ import React from "react";
 import { useState } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 import {
-  LockOutlined,
+  LockTwoTone,
+  MailTwoTone,
   UserOutlined,
-  MailOutlined,
-  LoadingOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import Starfield from "./Starfield";
+
 // require("dotenv").config();
 // const LOGIN = process.env.LOGIN;
 const REGISTER = "http://localhost:5000/api/auth/createuser";
@@ -86,6 +87,7 @@ isloading(false);
 
   return (
     <>
+      <Starfield />
       <div
         style={{
           display: "flex",
@@ -100,6 +102,13 @@ isloading(false);
           initialValues={{ remember: true }}
           onFinish={onFinish}
         >
+          <h1
+            className="whitetxt specialtxt"
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            {" "}
+            Register{" "}
+          </h1>
           <Form.Item
             name="username"
             rules={[{ required: true, message: "Please input your Name!" }]}
@@ -124,7 +133,7 @@ isloading(false);
             }}
           >
             <Input
-              prefix={<MailOutlined className="site-form-item-icon" />}
+              prefix={<MailTwoTone className="site-form-item-icon" />}
               placeholder=" Email"
             />
           </Form.Item>
@@ -145,7 +154,7 @@ isloading(false);
           >
             <Input.Password
               placeholder=" Password"
-              prefix={<LockOutlined className="site-form-item-icon" />}
+              prefix={<LockTwoTone className="site-form-item-icon" />}
             />
           </Form.Item>
           <Form.Item
@@ -165,7 +174,7 @@ isloading(false);
           >
             <Input.Password
               placeholder=" Confirm Password"
-              prefix={<LockOutlined className="site-form-item-icon" />}
+              prefix={<LockTwoTone className="site-form-item-icon" />}
             />
           </Form.Item>
 
@@ -176,11 +185,11 @@ isloading(false);
               className="login-form-button"
               onClick={handlesubmit}
               style={{ marginRight: 10 }}
+              loading={loading}
             >
-              {loading ? <LoadingOutlined /> : null}
               Register
             </Button>
-            Or{" "}
+            <span className="whitetxt specialtxt"> Or </span>
             <a
               href=""
               onClick={() => {

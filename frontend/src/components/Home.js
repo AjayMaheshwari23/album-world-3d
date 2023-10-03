@@ -7,6 +7,8 @@ import {
 import { Button, Tooltip, Space } from "antd";
 import { Row } from "antd";
 import { useNavigate } from "react-router-dom";
+import Starfield from "./Starfield"
+import '../CSS/Home.css'
 
 const Home = (props) => {
   const navigate = useNavigate();
@@ -14,6 +16,7 @@ const Home = (props) => {
 
   return (
     <>
+      <Starfield />
       <div
         style={{
           display: "flex",
@@ -46,10 +49,10 @@ const Home = (props) => {
           />
         </Row>
         <Row>
-          <span span={12} style={{ margin: 20 }}>
+          <span span={12} style={{ margin: 20 }} className="whitetxt">
             Login
           </span>
-          <span span={12} style={{ margin: 20 }}>
+          <span span={12} style={{ margin: 20 }} className="whitetxt">
             Register
           </span>
         </Row>
@@ -61,7 +64,7 @@ const Home = (props) => {
               icon={<PicCenterOutlined />}
               size="medium"
               onClick={() => {
-                navigate("/Signin");
+                navigate("/Main");
               }}
             >
               Enter Without Login

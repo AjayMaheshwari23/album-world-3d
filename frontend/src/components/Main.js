@@ -1,28 +1,46 @@
-import React from 'react'
+import React from "react";
 import { FloatButton } from "antd";
 import { LogoutOutlined } from "@ant-design/icons";
+import { CommentOutlined, CustomerServiceOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import Starfield from "./Starfield";
+import { Card } from "antd";
+
+const { Meta } = Card;
 
 const Main = (props) => {
-      const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
+  <>
+  <Starfield />
     <div>
       Gallery here
-      <FloatButton
-        icon={<LogoutOutlined />}
+      <FloatButton.Group
+        trigger="hover"
         type="primary"
-        onClick={() => 
-        {
+        style={{ right: 24 }}
+        icon={<CustomerServiceOutlined />}
+        >
+        <FloatButton
+          style={{ backgroundColor: "#79db93" }}
+          tooltip={<div>Submit Image</div>}
+          />
+        <FloatButton
+          style={{ backgroundColor: "#d15c5c" }}
+          icon={<LogoutOutlined />}
+          tooltip={<div>Logout</div>}
+          onClick={() => {
             console.log("logged out");
-            localStorage.removeItem('token');
+            localStorage.removeItem("token");
             props.showAlert("Logged Out", "info");
-           navigate("/");
-        }
-    }
-      />
+            navigate("/");
+          }}
+          />
+      </FloatButton.Group>
     </div>
+          </>
   );
-}
+};
 
 export default Main;
