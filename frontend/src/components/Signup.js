@@ -125,7 +125,7 @@ isloading(false);
           >
             <Input
               prefix={<MailOutlined className="site-form-item-icon" />}
-              placeholder="Email"
+              placeholder=" Email"
             />
           </Form.Item>
           <Form.Item
