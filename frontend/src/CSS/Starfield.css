@@ -83,10 +83,11 @@
 /* Demo syles
 ------------------------------------- */
 
-body {
+/* body {
   background: #000000;
-  font-family: "Orbitron", sans-serif;
-}
+
+  font-family: 'Orbitron', sans-serif;
+} */
 
 /* h1 {
   position: absolute;

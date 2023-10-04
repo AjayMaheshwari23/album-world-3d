@@ -6,6 +6,8 @@ import Signin from "./components/Signin";
 import Signup from "./components/Signup";
 import { useState } from "react";
 import MyAlert from "./components/MyAlert";
+import View1 from "./components/View1";
+import View2 from "./components/View2";
 import Main from "./components/Main";
 import Starfield from "./components/Starfield";
 
