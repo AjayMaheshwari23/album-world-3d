@@ -1,10 +1,9 @@
-import React from 'react'
-import '../CSS/Starfield.css'
+import React from "react";
+import "../CSS/Starfield.css";
 
-const Starfield = () => {
+const Starfield = ({ children }) => {
   return (
-    <>
-      {/* <h1>Album-World</h1> */}
+    <div className="starfield">
       <div className="space">
         <div className="stars"></div>
         <div className="stars"></div>
@@ -12,8 +11,9 @@ const Starfield = () => {
         <div className="stars"></div>
         <div className="stars"></div>
       </div>
-    </>
+      <div className="children">{children}</div>
+    </div>
   );
-}
+};
 
 export default Starfield;
