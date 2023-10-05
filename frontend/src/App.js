@@ -38,6 +38,8 @@ function App() {
             <Route path="/Signup" element={<Signup showAlert={showAlert} />} />
             <Route path="/Main" element={<Main showAlert={showAlert} />} />
           </Route>
+            <Route path="/View1" element={<View1 showAlert={showAlert} />} />
+            <Route path="/View2" element={<View2 showAlert={showAlert} />} />
         </Routes>
       </BrowserRouter>
     </>

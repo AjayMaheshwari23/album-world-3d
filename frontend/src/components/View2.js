@@ -1,78 +1,66 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "../CSS/View2.css";
 import img01 from "../assets/01.jpg";
+import img02 from "../assets/02.jpg";
+import { Image } from "antd";
+
+let divs = [];
 
 const View2 = () => {
+  const [gallery, setGallery] = useState([]);
+  let renderme = [];
 
-     const images = [];
+  const n = 12;
 
-     for (let i = 0; i < 10; i++) {
-       images.push(
-         <div className="item item--medium" key={i}>
-           <div className="item__details">jelly-o brownie sweet</div>
-         </div>
-       );
-     }
+  const resetImages = () => {
+    renderme = [];
+    const w = window.innerWidth;
+    const k = Math.round(w / 350);
+    const parts = w / k;
+    divs = [];
+    for (let i = 0; i < parts; i++) divs.push([]);
+
+    for (let i = 0; i < n; i++) {
+      let a = i & 1 ? img01 : img02;
+      divs[i % k].push(
+        <div className="image-item" key={i}>
+          <Image className="img card-img-top" src={a} />
+          <div className="overlay">
+            <div className="item__details">
+              <h4 className="card-text"> Title here </h4>
+              <h4> &nbsp; - Author </h4>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    for (let i = 0; i < k; i++) {
+      renderme.push(
+        <div className="column" key={i}>
+          {divs[i]}
+        </div>
+      );
+    }
+
+    setGallery(renderme);
+  };
+
+  useEffect(() => {
+    resetImages();
+    window.addEventListener("resize", resetImages);
+    return () => {
+      window.removeEventListener("resize", resetImages);
+    };
+  }, []);
 
   return (
-    <section className="section">
-      <h1> Gallery</h1>
-      <div className="grid">
-        {images}
+    <div className="container2">
+      <div className="image-gallery">
+        {gallery}
       </div>
-    </section>
+    </div>
   );
 };
 
 export default View2;
-
-
-/*
-
-<div className="item ">
-          <div className="item__details">jelly-o brownie sweet</div>
-        </div>
-        <div className="item item--large">
-          <div className="item__details">Muffin jelly gingerbread</div>
-        </div>
-        <div className="item item--medium">
-          <div className="item__details">sesame snaps chocolate</div>
-        </div>
-        <div className="item item--large">
-          <div className="item__details">Oat cake</div>
-        </div>
-        <div className="item item--medium">
-          <div className="item__details">jujubes cheesecake</div>
-        </div>
-        <div className="item item--medium">
-          <div className="item__details">Dragée pudding brownie</div>
-        </div>
-        <div className="item item--large">
-          <div className="item__details">Oat cake</div>
-        </div>
-        <div className="item">
-          <div className="item__details">powder toffee</div>
-        </div>
-        <div className="item item--medium">
-          <div className="item__details">pudding cheesecake</div>
-        </div>
-        <div className="item item--large">
-          <div className="item__details">toffee bear claw</div>
-        </div>
-        <div className="item">
-          <div className="item__details">cake cookie croissant</div>
-        </div>
-        <div className="item item--medium">
-          <div className="item__details">liquorice sweet roll</div>
-        </div>
-        <div className="item item--medium">
-          <div className="item__details">chocolate marzipan</div>
-        </div>
-        <div className="item item--large">
-          <div className="item__details">danish dessert lollipop</div>
-        </div>
-        <div className="item">
-          <div className="item__details">sugar plum dragée</div>
-        </div>
-
-*/
