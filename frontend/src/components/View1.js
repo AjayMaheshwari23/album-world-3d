@@ -1,17 +1,25 @@
-import React from 'react'
+import React, { useEffect } from "react";
 import * as THREE from "three";
 import { useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Image, ScrollControls, Scroll, useScroll } from "@react-three/drei";
 import { proxy, useSnapshot } from "valtio";
 
-const damp = THREE.MathUtils.damp
+const damp = THREE.MathUtils.damp;
 // const material = new THREE.LineBasicMaterial({ color: 'white' })
 // const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, -0.5, 0), new THREE.Vector3(0, 0.5, 0)])
+
+const urllss = [];
+for(let i=0;i<18;i++) 
+{
+  const urL = require(`../assets/${i+1}.png`)
+  urllss.push(urL);
+}
+
 const state = proxy({
   clicked: null,
-  urls: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 1, 5, 7, 8, 2, 4, 9, 6].map((u) => `/${u}.jpg`)
-})
+  urls: urllss,
+});
 
 // function Minimap() {
 //   const ref = useRef()
@@ -38,8 +46,7 @@ const state = proxy({
 // }
 
 function Item({ index, position, scale, c = new THREE.Color(), ...props }) {
-
-    const speed = 10;
+  const speed = 10;
   const ref = useRef();
   const scroll = useScroll();
   const { clicked, urls } = useSnapshot(state);
@@ -51,8 +58,8 @@ function Item({ index, position, scale, c = new THREE.Color(), ...props }) {
     const y = scroll.curve(
       index / urls.length - 1.5 / urls.length,
       4 / urls.length
-    ); 
-    
+    );
+
     const a = damp(
       ref.current.scale.y,
       clicked === index ? 5 : 4 + y,
@@ -60,7 +67,7 @@ function Item({ index, position, scale, c = new THREE.Color(), ...props }) {
       delta
     );
     // console.log(a);
-    ref.current.material.scale[1] = ref.current.scale.y = a
+    ref.current.material.scale[1] = ref.current.scale.y = a;
 
     ref.current.material.scale[0] = ref.current.scale.x = damp(
       ref.current.scale.x,
@@ -127,14 +134,19 @@ function Items({ w = 0.7, gap = 0.15 }) {
     >
       {/* <Minimap /> */}
       <Scroll>
-        {
-          urls.map((url, i) => <Item key={i} index={i} position={[i * xW, 0, 0]} scale={[w, 114, 10]} url={url} />) 
-        }
+        {urls.map((url, i) => (
+          <Item
+            key={i}
+            index={i}
+            position={[i * xW, 0, 0]}
+            scale={[w, 114, 10]}
+            url={url}
+          />
+        ))}
       </Scroll>
     </ScrollControls>
   );
 }
-
 
 const View1 = () => {
   return (
@@ -142,11 +154,11 @@ const View1 = () => {
       gl={{ antialias: false }}
       dpr={[1, 1.5]}
       onPointerMissed={() => (state.clicked = null)}
-      style={ {height:"100vh"} }
+      style={{ height: "100vh" }}
     >
       <Items />
     </Canvas>
   );
-}
+};
 
-export default View1
+export default View1;

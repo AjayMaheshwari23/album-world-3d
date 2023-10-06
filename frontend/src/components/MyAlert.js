@@ -1,26 +1,41 @@
 import React, { useState, useEffect } from "react";
-import { Alert } from "antd";
-import { Modal } from "antd";
+import { Button, message, Space } from "antd";
 
 const MyAlert = (props) => {
-  const [open, setopen] = useState(0);
+  const [messageApi, contextHolder] = message.useMessage();
+  const success = (msg) => {
+    messageApi.open({
+      type: "success",
+      content: msg,
+    });
+  };
+  const error = (msg) => {
+    messageApi.open({
+      type: "error",
+      content: msg,
+      duration: 5,
+    });
+  };
+  const warning = () => {
+    messageApi.open({
+      type: "warning",
+      content: "This is a warning message",
+    });
+  };
+
+  const info = (msg) => {
+    messageApi.info(props.alert.msg);
+  };
 
   useEffect(() => {
     // Show the modal when props.alert is not null
     if (props.alert) {
-      setopen(true);
-
-      if (props.alert.type !== "error") {
-        // Setting a timeout 
-        const timeoutId = setTimeout(() => {
-          setopen(false);
-        }, 700);
-        
-        // Clean up the timeout when the component unmounts
-        return () => {
-          clearTimeout(timeoutId);
-        };
-
+      if (props.alert.type === "success") {
+        success(props.alert.msg);
+      } else if (props.alert.type === "error") {
+        error(props.alert.msg);
+      } else if (props.alert.type === "info") {
+        info(props.alert.msg);
       }
     }
   }, [props.alert]);
@@ -28,20 +43,7 @@ const MyAlert = (props) => {
   if (props.alert == null) return <> </>;
 
   return (
-    <div>
-      <>
-        <Modal
-          title="Message"
-          centered
-          open={open}
-          onOk={() => setopen(0)}
-          onCancel={() => setopen(0)}
-          ghost = {true}
-        >
-          <Alert type={props.alert.type} message={props.alert.msg} banner />
-        </Modal>
-      </>
-    </div>
+    <>{contextHolder}</>
   );
 };
 

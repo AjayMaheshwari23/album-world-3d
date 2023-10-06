@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { Button, Form, Input } from "antd";
 import { LockTwoTone, MailTwoTone, UserOutlined } from "@ant-design/icons";
@@ -84,118 +84,119 @@ const Signin = (props) => {
   // }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}
-    >
-      <Form
-        name="normal_login"
-        className="login-form"
-        initialValues={{ remember: true }}
-        onFinish={onFinish}
-      >
-        <h1
-          className="whitetxt specialtxt"
-          style={{ display: "flex", justifyContent: "center" }}
-        >
-          {" "}
-          Register{" "}
-        </h1>
-        <Form.Item
-          name="username"
-          rules={[{ required: true, message: "Please input your Name!" }]}
-          value={credentials.name}
-          onChange={(e) => {
-            setcredentials({ ...credentials, ["name"]: e.target.value });
-            console.log(credentials);
-          }}
-        >
-          <Input
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            placeholder="Username"
-          />
-        </Form.Item>
-        <Form.Item
-          name="email"
-          rules={[{ required: true, message: "Please input your Email!" }]}
-          value={credentials.email}
-          onChange={(e) => {
-            setcredentials({ ...credentials, ["email"]: e.target.value });
-            console.log(credentials);
-          }}
-        >
-          <Input
-            prefix={<MailTwoTone className="site-form-item-icon" />}
-            placeholder=" Email"
-          />
-        </Form.Item>
-        <Form.Item
-          name="password"
-          fieldId="password"
-          value={credentials.password}
-          onChange={(e) => {
-            setcredentials({ ...credentials, ["password"]: e.target.value });
-            console.log(credentials);
-          }}
-          rules={[
-            {
-              required: true,
-              message: "Please input your password!",
-            },
-          ]}
-        >
-          <Input.Password
-            placeholder=" Password"
-            prefix={<LockTwoTone className="site-form-item-icon" />}
-          />
-        </Form.Item>
-        <Form.Item
-          name="cpassword"
-          fieldId="cpassword"
-          value={credentials.password}
-          onChange={(e) => {
-            setcredentials({ ...credentials, ["cpassword"]: e.target.value });
-            console.log(credentials);
-          }}
-          rules={[
-            {
-              required: true,
-              message: "Re-Enter your password!",
-            },
-          ]}
-        >
-          <Input.Password
-            placeholder=" Confirm Password"
-            prefix={<LockTwoTone className="site-form-item-icon" />}
-          />
-        </Form.Item>
 
-        <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="login-form-button"
-            onClick={handlesubmit}
-            style={{ marginRight: 10 }}
-            loading={loading}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Form
+          name="normal_login"
+          className="login-form"
+          initialValues={{ remember: true }}
+          onFinish={onFinish}
+        >
+          <h1
+            className="whitetxt specialtxt"
+            style={{ display: "flex", justifyContent: "center" }}
           >
-            Register
-          </Button>
-          <span className="whitetxt specialtxt"> Or </span>
-          <a
-            onClick={() => {
-              navigate("/Signin");
+            {" "}
+            Register{" "}
+          </h1>
+          <Form.Item
+            name="username"
+            rules={[{ required: true, message: "Please input your Name!" }]}
+            value={credentials.name}
+            onChange={(e) => {
+              setcredentials({ ...credentials, ["name"]: e.target.value });
+              console.log(credentials);
             }}
           >
-            Already have Credentials !
-          </a>
-        </Form.Item>
-      </Form>
-    </div>
+            <Input
+              prefix={<UserOutlined className="site-form-item-icon" />}
+              placeholder="Username"
+            />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            rules={[{ required: true, message: "Please input your Email!" }]}
+            value={credentials.email}
+            onChange={(e) => {
+              setcredentials({ ...credentials, ["email"]: e.target.value });
+              console.log(credentials);
+            }}
+          >
+            <Input
+              prefix={<MailTwoTone className="site-form-item-icon" />}
+              placeholder=" Email"
+            />
+          </Form.Item>
+          <Form.Item
+            name="password"
+            fieldId="password"
+            value={credentials.password}
+            onChange={(e) => {
+              setcredentials({ ...credentials, ["password"]: e.target.value });
+              console.log(credentials);
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Please input your password!",
+              },
+            ]}
+          >
+            <Input.Password
+              placeholder=" Password"
+              prefix={<LockTwoTone className="site-form-item-icon" />}
+            />
+          </Form.Item>
+          <Form.Item
+            name="cpassword"
+            fieldId="cpassword"
+            value={credentials.password}
+            onChange={(e) => {
+              setcredentials({ ...credentials, ["cpassword"]: e.target.value });
+              console.log(credentials);
+            }}
+            rules={[
+              {
+                required: true,
+                message: "Re-Enter your password!",
+              },
+            ]}
+          >
+            <Input.Password
+              placeholder=" Confirm Password"
+              prefix={<LockTwoTone className="site-form-item-icon" />}
+            />
+          </Form.Item>
+
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              className="login-form-button"
+              onClick={handlesubmit}
+              style={{ marginRight: 10 }}
+              loading={loading}
+            >
+              Register
+            </Button>
+            <span className="whitetxt specialtxt"> Or </span>
+            <a
+              onClick={() => {
+                navigate("/Signin");
+              }}
+            >
+              Already have Credentials !
+            </a>
+          </Form.Item>
+        </Form>
+      </div>
   );
 };
 export default Signin;

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { Button, Checkbox, Form, Input } from "antd";
 import { LockTwoTone, MailTwoTone } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "../CSS/Signin.css";
+import UserContext from "../UserContext";
 
 // require("dotenv").config();
 // const LOGIN = process.env.LOGIN;
@@ -18,7 +19,8 @@ const Signin = (props) => {
 
   const [credentials, setcredentials] = useState({ email: "", password: "" });
   const [loading, isloading] = useState(0);
-
+  const userContext = useContext(UserContext);
+  console.log(userContext);
   const handlesubmit = async (e) => {
     isloading(true);
     e.preventDefault();
@@ -39,8 +41,9 @@ const Signin = (props) => {
       const data = await response.json();
 
       // Log the data to the console
-      console.log("Response data:", data);
+      // console.log("Response data:", data);
       if (data.success) {
+        userContext.setAuthData(data.jwtToken);
         localStorage.setItem("token", data.jwtToken);
         props.showAlert("Successful Login", "success");
         navigate("/Main");
@@ -86,7 +89,7 @@ const Signin = (props) => {
           value={credentials.email}
           onChange={(e) => {
             setcredentials({ ...credentials, ["email"]: e.target.value });
-            console.log(credentials);
+            // console.log(credentials);
           }}
           rules={[{ required: true, message: "Please input your Email!" }]}
         >
@@ -109,7 +112,7 @@ const Signin = (props) => {
                 ...credentials,
                 ["password"]: e.target.value,
               });
-              console.log(credentials);
+              // console.log(credentials);
             }}
           />
         </Form.Item>
@@ -129,6 +132,7 @@ const Signin = (props) => {
             onClick={handlesubmit}
             style={{ marginRight: 10 }}
             loading={loading}
+            // disabled={loading}
           >
             Log in
           </Button>

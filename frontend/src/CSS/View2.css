@@ -58,7 +58,7 @@ height: 100%;
 .image-gallery .column {
     display: flex;
     flex-direction: column;
-    flex-basis: 33%;
+    /* flex-basis: 33%; */
     gap: 15px;
 }
 
