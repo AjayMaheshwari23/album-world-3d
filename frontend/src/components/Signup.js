@@ -1,19 +1,18 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import { Button, Form, Input } from "antd";
 import { LockTwoTone, MailTwoTone, UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import CONFIG from "../config";
 
 // require("dotenv").config();
 // const LOGIN = process.env.LOGIN;
-const REGISTER = "http://localhost:5000/api/auth/createuser";
+const REGISTER = CONFIG.backend_url + "/api/auth/createuser";
 
 const onFinish = (values) => {
   console.log("Success:", values);
 };
-const onFinishFailed = (errorInfo) => {
-  console.log("Failed:", errorInfo);
-};
+
 
 const Signin = (props) => {
   const navigate = useNavigate();
@@ -111,7 +110,7 @@ const Signin = (props) => {
             rules={[{ required: true, message: "Please input your Name!" }]}
             value={credentials.name}
             onChange={(e) => {
-              setcredentials({ ...credentials, ["name"]: e.target.value });
+              setcredentials({ ...credentials, name: e.target.value });
               console.log(credentials);
             }}
           >
@@ -125,7 +124,7 @@ const Signin = (props) => {
             rules={[{ required: true, message: "Please input your Email!" }]}
             value={credentials.email}
             onChange={(e) => {
-              setcredentials({ ...credentials, ["email"]: e.target.value });
+              setcredentials({ ...credentials, email: e.target.value });
               console.log(credentials);
             }}
           >
@@ -139,7 +138,7 @@ const Signin = (props) => {
             fieldId="password"
             value={credentials.password}
             onChange={(e) => {
-              setcredentials({ ...credentials, ["password"]: e.target.value });
+              setcredentials({ ...credentials, password: e.target.value });
               console.log(credentials);
             }}
             rules={[
@@ -159,7 +158,7 @@ const Signin = (props) => {
             fieldId="cpassword"
             value={credentials.password}
             onChange={(e) => {
-              setcredentials({ ...credentials, ["cpassword"]: e.target.value });
+              setcredentials({ ...credentials, cpassword: e.target.value });
               console.log(credentials);
             }}
             rules={[
@@ -187,13 +186,13 @@ const Signin = (props) => {
               Register
             </Button>
             <span className="whitetxt specialtxt"> Or </span>
-            <a
+            <span
               onClick={() => {
                 navigate("/Signin");
               }}
             >
               Already have Credentials !
-            </a>
+            </span>
           </Form.Item>
         </Form>
       </div>

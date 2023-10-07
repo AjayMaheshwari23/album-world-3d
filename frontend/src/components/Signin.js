@@ -5,10 +5,11 @@ import { LockTwoTone, MailTwoTone } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "../CSS/Signin.css";
 import UserContext from "../UserContext";
+import CONFIG from "../config";
 
 // require("dotenv").config();
 // const LOGIN = process.env.LOGIN;
-const LOGIN = "http://localhost:5000/api/auth/login";
+const LOGIN = CONFIG.backend_url + "/api/auth/login";
 
 const onFinish = (values) => {
   console.log("Success:", values);

@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CONFIG from './config'
 const UserContext = createContext(null);
 
 export function UserContextProvider({ children }) {
@@ -15,7 +16,8 @@ const navigate = useNavigate();
         if (token == null) {
           throw new Error("Token not found...");
         }
-        const response = await fetch("http://localhost:5000/api/auth/getuser", {
+        const url = CONFIG.backend_url + "/api/auth/getuser";
+        const response = await fetch(url, {
           method: "POST",
           body: JSON.stringify({
             jwToken: token,
@@ -23,9 +25,9 @@ const navigate = useNavigate();
         });
 
         //  for Development Reasons !!
-        const dat = {  };
-        setAuthData(dat);
-        return;
+        // const dat = {  };
+        // setAuthData(dat);
+        // return;
         // --------------------
 
         console.log("protected route is called");
